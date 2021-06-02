@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -48,7 +50,7 @@ DefaultTableModel dtm;
             }
         catch(SQLException ex){
         }
-        t_siswa.setModel(dtm);
+        tbl_siswa.setModel(dtm);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -60,14 +62,14 @@ DefaultTableModel dtm;
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        wbl_siswa = new javax.swing.JTable();
+        tbl_siswa = new javax.swing.JTable();
         cmdHapus = new javax.swing.JButton();
         cmdEdit = new javax.swing.JButton();
         cmdTambah = new javax.swing.JButton();
         cmdRefresh = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
 
-        wbl_siswa.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_siswa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -78,9 +80,19 @@ DefaultTableModel dtm;
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(wbl_siswa);
+        tbl_siswa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_siswaMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbl_siswa);
 
         cmdHapus.setText("Hapus");
+        cmdHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdHapusActionPerformed(evt);
+            }
+        });
 
         cmdEdit.setText("Ubah");
         cmdEdit.addActionListener(new java.awt.event.ActionListener() {
@@ -90,6 +102,11 @@ DefaultTableModel dtm;
         });
 
         cmdTambah.setText("Tambah");
+        cmdTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdTambahActionPerformed(evt);
+            }
+        });
 
         cmdRefresh.setText("Refresh");
 
@@ -149,6 +166,35 @@ DefaultTableModel dtm;
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
+    private void cmdTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdTambahActionPerformed
+        // TODO add your handling code here:
+        ManageData tambahData = new ManageData(this, true, "Tambah","");
+        tambahData.setVisible(true);
+    }//GEN-LAST:event_cmdTambahActionPerformed
+    int baris;
+    private void tbl_siswaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_siswaMouseClicked
+        // TODO add your handling code here:
+        baris =tbl_siswa.getSelectedRow();
+    }//GEN-LAST:event_tbl_siswaMouseClicked
+
+    private void cmdHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdHapusActionPerformed
+        String idWhoWantsToBeDeleted = tbl_siswa.getValueAt(baris, 1).toString();
+        try {
+            Statement stmt = koneksi.createStatement();
+            String query = "DELETE FROM t_siswa WHERE nis = '"+idWhoWantsToBeDeleted+"'";
+            System.out.println(query);
+            int berhasil = stmt.executeUpdate(query);
+            if(berhasil == 1){
+                JOptionPane.showMessageDialog(null, "Data Berhasil Dihapus");
+                dtm.getDataVector().removeAllElements();
+                showData();
+            }else{
+                JOptionPane.showMessageDialog(null,"Data berhasil dihapus");
+            }
+        }catch(SQLException ex){
+        }// TODO add your handling code here:
+    }//GEN-LAST:event_cmdHapusActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdEdit;
@@ -157,6 +203,6 @@ DefaultTableModel dtm;
     private javax.swing.JButton cmdTambah;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTable wbl_siswa;
+    private javax.swing.JTable tbl_siswa;
     // End of variables declaration//GEN-END:variables
 }
