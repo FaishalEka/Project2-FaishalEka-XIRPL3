@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package DatabaseConnection;
 
 import java.sql.Connection;
@@ -7,28 +12,25 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  *
- * @author FaishalEka
+ * @author creat
  */
-public final class DataSiswa extends javax.swing.JPanel {
+public class DataSiswa extends javax.swing.JFrame {
 
+    /**
+     * Creates new form DataSiswa
+     */
     Connection koneksi;
     
     public DataSiswa() {
         initComponents();
-        koneksi = DatabaseConnection.getKoneksi("localhost","3306","root","","db_sekolah");
+        koneksi = DatabaseConnection.getKoneksi("localhost", "3306", "root", "", "db_sekolah");
+        
         showData();
     }
     
-DefaultTableModel dtm;
+    DefaultTableModel dtm;
     public void showData(){
         
         String[] kolom = {"NO","NIS","Nama","Kelas","Jurusan"};
@@ -49,9 +51,13 @@ DefaultTableModel dtm;
                 no++;}
             }
         catch(SQLException ex){
+            ex.printStackTrace();
         }
-        tbl_siswa.setModel(dtm);
+        t_siswa.setModel(dtm);
     }
+
+    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -62,14 +68,16 @@ DefaultTableModel dtm;
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbl_siswa = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        t_siswa = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
         cmdHapus = new javax.swing.JButton();
-        cmdEdit = new javax.swing.JButton();
+        cmdUbah = new javax.swing.JButton();
         cmdTambah = new javax.swing.JButton();
         cmdRefresh = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
 
-        tbl_siswa.setModel(new javax.swing.table.DefaultTableModel(
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -80,12 +88,30 @@ DefaultTableModel dtm;
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tbl_siswa.addMouseListener(new java.awt.event.MouseAdapter() {
+        jScrollPane1.setViewportView(jTable1);
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        t_siswa.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        t_siswa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tbl_siswaMouseClicked(evt);
+                t_siswaMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tbl_siswa);
+        jScrollPane2.setViewportView(t_siswa);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel1.setText("DATA SISWA");
 
         cmdHapus.setText("Hapus");
         cmdHapus.addActionListener(new java.awt.event.ActionListener() {
@@ -94,10 +120,10 @@ DefaultTableModel dtm;
             }
         });
 
-        cmdEdit.setText("Ubah");
-        cmdEdit.addActionListener(new java.awt.event.ActionListener() {
+        cmdUbah.setText("Ubah");
+        cmdUbah.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdEditActionPerformed(evt);
+                cmdUbahActionPerformed(evt);
             }
         });
 
@@ -109,79 +135,73 @@ DefaultTableModel dtm;
         });
 
         cmdRefresh.setText("Refresh");
-
-        jTextField1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jTextField1.setText("DATA SISWA");
-        jTextField1.setPreferredSize(new java.awt.Dimension(69, 20));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        cmdRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                cmdRefreshActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(cmdRefresh)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cmdTambah)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmdEdit)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmdHapus)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(137, 137, 137))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(119, 119, 119))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(cmdRefresh)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
+                        .addComponent(cmdTambah)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmdUbah)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmdHapus)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(14, Short.MAX_VALUE)
+                .addComponent(jLabel1)
                 .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdHapus)
-                    .addComponent(cmdEdit)
+                    .addComponent(cmdUbah)
                     .addComponent(cmdTambah)
                     .addComponent(cmdRefresh))
                 .addContainerGap())
         );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void cmdEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEditActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmdEditActionPerformed
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void cmdTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdTambahActionPerformed
         // TODO add your handling code here:
         ManageData tambahData = new ManageData(this, true, "Tambah","");
         tambahData.setVisible(true);
     }//GEN-LAST:event_cmdTambahActionPerformed
+    
     int baris;
-    private void tbl_siswaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_siswaMouseClicked
+    private void t_siswaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_t_siswaMouseClicked
         // TODO add your handling code here:
-        baris =tbl_siswa.getSelectedRow();
-    }//GEN-LAST:event_tbl_siswaMouseClicked
+        baris = t_siswa.getSelectedRow();
+    }//GEN-LAST:event_t_siswaMouseClicked
 
     private void cmdHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdHapusActionPerformed
-        String idWhoWantsToBeDeleted = tbl_siswa.getValueAt(baris, 1).toString();
+        // TODO add your handling code here:
+        String thoseWhoWantsToBeDeleted = t_siswa.getValueAt(baris, 1).toString();
         try {
             Statement stmt = koneksi.createStatement();
-            String query = "DELETE FROM t_siswa WHERE nis = '"+idWhoWantsToBeDeleted+"'";
+            String query = "DELETE FROM t_siswa WHERE nis = '"+thoseWhoWantsToBeDeleted+"'";
             System.out.println(query);
             int berhasil = stmt.executeUpdate(query);
             if(berhasil == 1){
@@ -192,17 +212,68 @@ DefaultTableModel dtm;
                 JOptionPane.showMessageDialog(null,"Data berhasil dihapus");
             }
         }catch(SQLException ex){
-        }// TODO add your handling code here:
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_cmdHapusActionPerformed
 
+    private void cmdUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdUbahActionPerformed
+        // TODO add your handling code here:
+        String nis = t_siswa.getValueAt(baris,1).toString();
+        ManageData tambahData = new ManageData(this,true, "Edit", nis);
+        tambahData.setVisible(true);
+    }//GEN-LAST:event_cmdUbahActionPerformed
+
+    private void cmdRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdRefreshActionPerformed
+        // TODO add your handling code here:
+        showData();
+    }//GEN-LAST:event_cmdRefreshActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(DataSiswa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(DataSiswa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(DataSiswa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(DataSiswa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new DataSiswa().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cmdEdit;
     private javax.swing.JButton cmdHapus;
     private javax.swing.JButton cmdRefresh;
     private javax.swing.JButton cmdTambah;
+    private javax.swing.JButton cmdUbah;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTable tbl_siswa;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable t_siswa;
     // End of variables declaration//GEN-END:variables
+
+
 }
